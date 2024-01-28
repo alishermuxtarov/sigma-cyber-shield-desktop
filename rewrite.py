@@ -41,6 +41,16 @@ NOTIFICATION_TEMPLATE = '''
 osascript -e 'display notification "{}" with title "{}" sound name "Glass"'
 '''
 
+ALLOWED_HOSTS = [
+    'google.com',
+    'www.google.com',
+    'google.ru',
+    'www.google.ru',
+    'yandex.ru',
+    'ya.ru',
+    'dzen.ru',
+]
+
 _BLOCK_CONTENT = {
     'Payme': {
         'level': 'critical',
@@ -101,8 +111,8 @@ def get_keywords():
         w = d['keyword']
         content[w] = {
             'level': 'critical',
-            'title': 'Стоп мошенник',
-            'message': 'Доступ к контенту ограничен. Контент сексуального характера!',
+            'title': 'CyberShield',
+            'message': 'Доступ к контенту ограничен. Контент носит сомнительный характер!',
             'block': True,
             'domain': d['allowed_for_host'],
         }
@@ -217,18 +227,19 @@ def main():
 
         response = ch_id + ' OK'
 
-        if not is_media(url) and parse.netloc and http_method == 'GET' and parse.netloc not in ['www.google.com']:
-            logger.info(request)
-
+        if not is_media(url) and parse.netloc and http_method == 'GET' and parse.netloc not in ALLOWED_HOSTS:
             content = get_page(url)
 
             if content:
+                logger.info(request)
+
                 visible_content = text_from_html(content).lower()
                 write_content(url, visible_content)
 
                 find_urls = RE.findall(url)
                 visible_content = visible_content.split()
                 find_words = [w for w in BLOCK_CONTENT.keys() if w in visible_content]
+
                 if find_urls or find_words:
                     if find_words:
                         data = BLOCK_CONTENT.get(find_words[0])
