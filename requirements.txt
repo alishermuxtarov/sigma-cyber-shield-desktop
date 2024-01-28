@@ -1,3 +1,5 @@
-requests
-redis
-mysql-connector-python
+requests==2.31.0
+redis==5.0.1
+mysql-connector-python==8.3.0
+beautifulsoup4==4.12.3
+
