@@ -14,7 +14,7 @@ from bs4.element import Comment
 import mysql.connector
 
 
-PATH = '/Users/ruslanaskarov/PycharmProjects/RBC/sigma-cyber-shield-desktop'
+PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 logger = logging.getLogger('cyber_shield_app')
@@ -29,6 +29,7 @@ os.environ['NO_PROXY'] = '*'
 
 REWRITE_URL = 'http://127.0.0.1:8000/block.html'
 STOP_URL = 'http://127.0.0.1:8000/stop.html'
+API_URL = 'https://odc24.rbc-group.uz/api'
 
 NOTIFICATION_TEMPLATE = '''
 osascript -e 'display notification "{}" with title "{}"'
