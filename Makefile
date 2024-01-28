@@ -1,3 +1,4 @@
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 run:
 	@networksetup -setwebproxy wi-fi 127.0.0.1 3128
