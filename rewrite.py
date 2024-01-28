@@ -217,7 +217,7 @@ def main():
 
         response = ch_id + ' OK'
 
-        if not is_media(url) and parse.netloc and http_method == 'GET':
+        if not is_media(url) and parse.netloc and http_method == 'GET' and parse.netloc not in ['www.google.com']:
             logger.info(request)
 
             content = get_page(url)
@@ -227,9 +227,7 @@ def main():
                 write_content(url, visible_content)
 
                 find_urls = RE.findall(url)
-
-                # find_words = any(map(lambda x: x in content, BLOCK_CONTENT.keys()))
-                # find_words = any(map(lambda x: x in content, BLOCK_CONTENT.keys()))
+                visible_content = visible_content.split()
                 find_words = [w for w in BLOCK_CONTENT.keys() if w in visible_content]
                 if find_urls or find_words:
                     if find_words:
@@ -244,12 +242,9 @@ def main():
                             notify(data.get('title'), data.get('message'))
                             logger.info('[Block by Word] {}'.format(find_words[0]))
                     elif find_urls:
-                        #data = BLOCK_URL.get(find_urls[0])
-                        #if data.get('block'):
-                        #    response += ' status=301 url={}'.format(REWRITE_URL)
-                        logger.info('[Block by URL] {}'.format(url))
                         response += ' status=301 url={}'.format(REWRITE_URL)
                         notify('Опасный сайт', 'Сайт был заблокирован. Так как содержит опасный контент!')
+                        logger.info('[Block by URL] {}'.format(url))
 
         response += '\n'
         sys.stdout.write(response)
